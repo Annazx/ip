@@ -6,11 +6,11 @@ public class JaneEyre {
         System.out.println("What can I do for you?\n" + line);
 
         Scanner scanner = new Scanner(System.in);
-        boolean bye = false;
-        while (!bye) {
+        boolean isDone = false;
+        while (!isDone) {
             String input = scanner.nextLine();
             if (input.equals("bye")) {
-                bye = true;
+                isDone = true;
             } else {
                 System.out.println(line + input + "\n" + line);
             }
