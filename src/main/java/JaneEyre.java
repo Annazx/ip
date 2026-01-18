@@ -56,7 +56,10 @@ public class JaneEyre {
             System.out.println("Please enter a valid command");
         }
         if (isValid) {
-            System.out.println(LINE + "added: " + input + "\n" + LINE);
+            System.out.println(LINE + "Got it. I've added this task:\n  "
+                    + tasks.get(tasks.size() - 1).toString()
+                    + "\n" + String.format("Now you have %d tasks in the list", tasks.size()) + "\n"
+                    + LINE);
         }
     }
 
