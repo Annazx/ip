@@ -13,7 +13,7 @@ public class JaneEyre {
     public static void handleMark(String input, ArrayList<Task> tasks) {
         int i = Integer.valueOf(input.substring(4).trim()) - 1;
         // what if it is an error?
-        tasks.set(i, tasks.get(i).mark(true));
+        tasks.get(i).mark(true);
         System.out.println(LINE + "Nice! I've marked this task as done:\n  "
                 + tasks.get(i) + "\n" + LINE);
     }
@@ -21,28 +21,42 @@ public class JaneEyre {
     public static void handleUnmark(String input, ArrayList<Task> tasks) {
         int i = Integer.valueOf(input.substring(6).trim()) - 1;
         // need exception handling here
-        tasks.set(i, tasks.get(i).mark(false));
+        tasks.get(i).mark(false);
         System.out.println(LINE + "OK, I've marked this task as not done yet:\n  "
                 + tasks.get(i) + "\n" + LINE);
     }
 
     public static void handleAdd(String input, ArrayList<Task> tasks) {
-        System.out.println(LINE + "added: " + input + "\n" + LINE);
-        if (input.contains("/from") && input.contains("/to")) {
-            int start = input.indexOf("/from");
-            int end = input.indexOf("/to");
-            //System.out.println(String.format("%d %d", start, end));
-            String des = input.substring(0, start).trim();
-            String from = input.substring(5 + start, end).trim();
-            String to = input.substring(end + 3).trim();
-            tasks.add(new Event(des, from, to));
-        } else if (input.contains("/by")) {
-            int start = input.indexOf("/by");
-            String des = input.substring(0, start).trim();
-            String by = input.substring(start + 3).trim();
-            tasks.add(new Deadline(des, by));
-        } else {
-            tasks.add(new Todo(input));
+        boolean isValid = true;
+        if (input.startsWith("event")) {
+            if (input.contains("/from") && input.contains("/to")) {
+                int start = input.indexOf("/from");
+                int end = input.indexOf("/to");
+                //System.out.println(String.format("%d %d", start, end));
+                String des = input.substring(5, start).trim();
+                String from = input.substring(5 + start, end).trim();
+                String to = input.substring(end + 3).trim();
+                tasks.add(new Event(des, from, to));
+            }
+            //error handling here
+        } else if (input.startsWith("deadline")) {
+            if (input.contains("/by")) {
+                int start = input.indexOf("/by");
+                String des = input.substring(8, start).trim();
+                String by = input.substring(start + 3).trim();
+                tasks.add(new Deadline(des, by));
+            }
+            //error handling here
+        }
+        else if (input.startsWith("todo")) {
+            tasks.add(new Todo(input.substring(4)));
+        }
+        else {
+            isValid = false;
+            System.out.println("Please enter a valid command");
+        }
+        if (isValid) {
+            System.out.println(LINE + "added: " + input + "\n" + LINE);
         }
     }
 

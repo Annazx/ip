@@ -1,6 +1,6 @@
 public class Task {
     protected String description;
-    protected boolean isDone;
+    public boolean isDone;
 
     public Task(String description) {
         this.description = description;
@@ -16,8 +16,8 @@ public class Task {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
-    public Task mark(boolean newDone) {
-        return new Task(description, newDone);
+    public void mark(boolean newDone) {
+        this.isDone = newDone;
     }
 
     public String toString() {
