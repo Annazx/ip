@@ -1,4 +1,5 @@
-package PACKAGE_NAME;
-
-public class JaneException {
+public class JaneException extends Exception {
+    public JaneException(String message) {
+        super(message);
+    }
 }
