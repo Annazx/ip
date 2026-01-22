@@ -44,46 +44,49 @@ public class JaneEyre {
                 + tasks.get(i) + "\n" + LINE);
     }
 
-    public static void handleAdd(String input, ArrayList<Task> tasks) throws JaneException {
-        boolean isValid = true;
-        if (input.startsWith("event")) {
-            if (input.contains("/from") && input.contains("/to")) {
-                int start = input.indexOf("/from");
-                int end = input.indexOf("/to");
-                //System.out.println(String.format("%d %d", start, end));
-                String des = input.substring(5, start).trim();
-                String from = input.substring(5 + start, end).trim();
-                String to = input.substring(end + 3).trim();
-                if (des.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                    throw new JaneException("Empty task\n");
-                }
-                tasks.add(new Event(des, from, to));
-            } else {
-                throw new JaneException("Usage: event [task] /from [start] /to [end]\n");
-            }
-        } else if (input.startsWith("deadline")) {
-            if (input.contains("/by")) {
-                int start = input.indexOf("/by");
-                String des = input.substring(8, start).trim();
-                String by = input.substring(start + 3).trim();
-                if (des.isEmpty() || by.isEmpty()) {
-                    throw new JaneException("Empty task\n");
-                }
-                tasks.add(new Deadline(des, by));
-            } else {
-                throw new JaneException("Usage: deadline [task] /by [time]\n");
-            }
-        }
-        else {
-            if (input.substring(4).trim().isEmpty()) {
-                throw new JaneException("Usage: todo [task]\n");
-            }
-            tasks.add(new Todo(input.substring(4).trim()));
-        }
+    public static void addTask(Task task, ArrayList<Task> tasks) {
+        tasks.add(task);
         System.out.println(LINE + "Got it. I've added this task:\n  "
-                    + tasks.get(tasks.size() - 1).toString()
-                    + "\n" + String.format("Now you have %d tasks in the list", tasks.size()) + "\n"
-                    + LINE);
+                + tasks.get(tasks.size() - 1).toString()
+                + "\n" + String.format("Now you have %d tasks in the list", tasks.size()) + "\n"
+                + LINE);
+    }
+    public static void handleEvent(String input, ArrayList<Task> tasks) throws JaneException {
+        if (input.contains("/from") && input.contains("/to")) {
+            int start = input.indexOf("/from");
+            int end = input.indexOf("/to");
+            //System.out.println(String.format("%d %d", start, end));
+            String des = input.substring(5, start).trim();
+            String from = input.substring(5 + start, end).trim();
+            String to = input.substring(end + 3).trim();
+            if (des.isEmpty() || from.isEmpty() || to.isEmpty()) {
+                throw new JaneException("Empty field\nUsage: event [task] /from [start] /to [end]\n");
+            }
+            addTask(new Event(des, from, to), tasks);
+        } else {
+            throw new JaneException("Usage: event [task] /from [start] /to [end]\n");
+        }
+    }
+
+    public static void handleDeadline(String input, ArrayList<Task> tasks) throws JaneException {
+        if (input.contains("/by")) {
+            int start = input.indexOf("/by");
+            String des = input.substring(8, start).trim();
+            String by = input.substring(start + 3).trim();
+            if (des.isEmpty() || by.isEmpty()) {
+                throw new JaneException("Empty field\nUsage: deadline [task] /by [time]\n");
+            }
+            addTask(new Deadline(des, by), tasks);
+        } else {
+            throw new JaneException("Usage: deadline [task] /by [time]\n");
+        }
+    }
+
+    public static void handleTodo(String input, ArrayList<Task> tasks) throws JaneException {
+        if (input.substring(4).trim().isEmpty()) {
+            throw new JaneException("Usage: todo [task]\n");
+        }
+        addTask(new Todo(input.substring(4).trim()), tasks);
     }
 
     public static void handleRemove(String input, ArrayList<Task> tasks) throws JaneException {
@@ -111,29 +114,43 @@ public class JaneEyre {
         boolean isDone = false;
         while (!isDone) {
             String input = scanner.nextLine().trim();
+            String commandWord = input.split(" ")[0];
             try {
-                if (input.equals("bye")) {
-                    isDone = true;
-                } else if (input.equals("list")) {
-                    taskListPrinter(tasks);
-                } else if (input.startsWith("mark")) {
-                    handleMark(input, tasks);
-                } else if (input.startsWith("unmark")) {
-                    handleUnmark(input, tasks);
-                } else if (input.startsWith("todo")
-                        || input.startsWith("deadline")
-                        || input.startsWith("event")) {
-                    handleAdd(input, tasks);
-                } else if (input.startsWith("delete")) {
-                    handleRemove(input, tasks);
-                } else {
-                    throw new JaneException("Sorry, I don't understand!\n");
+                switch (commandWord) {
+                    case "bye":
+                        System.out.println("Bye. Hope to see you again soon!\n" + LINE);
+                        isDone = true;
+                        break;
+                    case "list":
+                        taskListPrinter(tasks);
+                        break;
+                    case "mark":
+                        handleMark(input, tasks);
+                        break;
+                    case "unmark":
+                        handleUnmark(input, tasks);
+                        break;
+                    case "todo":
+                        handleTodo(input, tasks);
+                        break;
+                    case "deadline":
+                        handleDeadline(input, tasks);
+                        break;
+                    case "event":
+                        handleEvent(input, tasks);
+                        break;
+                    case "delete":
+                        handleRemove(input, tasks);
+                        break;
+                    default:
+                        System.out.println(LINE + "\nTo speak truth, sir, I don’t understand you at all:\n " +
+                                "I cannot keep up the conversation, because it has got out of my depth.\n" + LINE);
                 }
             }
             catch(JaneException e) {
                 System.out.println(LINE + "User input error\n" + e.getMessage() + LINE);
             }
         }
-        System.out.println("Bye. Hope to see you again soon!\n" + LINE);
+        //System.out.println("Bye. Hope to see you again soon!\n" + LINE);
     }
 }
