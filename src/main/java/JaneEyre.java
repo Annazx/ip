@@ -151,6 +151,5 @@ public class JaneEyre {
                 System.out.print(LINE + "User input error\n" + e.getMessage() + LINE);
             }
         }
-        //System.out.println("Bye. Hope to see you again soon!\n" + LINE);
     }
 }
