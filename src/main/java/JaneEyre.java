@@ -4,7 +4,7 @@ public class JaneEyre {
     private static final String LINE =
             "____________________________________________________________\n";
     public static void taskListPrinter(ArrayList<Task> tasks) throws JaneException {
-        System.out.println(LINE);
+        System.out.print(LINE);
         if (tasks.size() == 0) {
             throw new JaneException("Your task list is currently empty\n");
         }
@@ -25,7 +25,7 @@ public class JaneEyre {
             throw new JaneException("Please use a valid index\n");
         }
         tasks.get(i).mark(true);
-        System.out.println(LINE + "Nice! I've marked this task as done:\n  "
+        System.out.print(LINE + "Nice! I've marked this task as done:\n  "
                 + tasks.get(i) + "\n" + LINE);
     }
 
@@ -40,13 +40,13 @@ public class JaneEyre {
             throw new JaneException("Please use a valid index\n");
         }
         tasks.get(i).mark(false);
-        System.out.println(LINE + "OK, I've marked this task as not done yet:\n  "
+        System.out.print(LINE + "OK, I've marked this task as not done yet:\n  "
                 + tasks.get(i) + "\n" + LINE);
     }
 
     public static void addTask(Task task, ArrayList<Task> tasks) {
         tasks.add(task);
-        System.out.println(LINE + "Got it. I've added this task:\n  "
+        System.out.print(LINE + "Got it. I've added this task:\n  "
                 + tasks.get(tasks.size() - 1).toString()
                 + "\n" + String.format("Now you have %d tasks in the list", tasks.size()) + "\n"
                 + LINE);
@@ -101,13 +101,13 @@ public class JaneEyre {
         }
         Task temp = tasks.get(i);
         tasks.remove(i);
-        System.out.println(LINE + " Noted. I've removed this task\n  "
+        System.out.print(LINE + " Noted. I've removed this task\n  "
                 + temp + "\n" + String.format("Now you have %d tasks in the list.\n", tasks.size())+ LINE);
     }
 
     public static void main(String[] args) {
-        System.out.println(LINE + "Hello, I'm Jane Eyre\n");
-        System.out.println("What can I do for you?\n" + LINE);
+        System.out.print(LINE + "Hello, I'm Jane Eyre\n");
+        System.out.print("What can I do for you?\n" + LINE);
 
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> tasks = new ArrayList<>(100);
@@ -143,12 +143,12 @@ public class JaneEyre {
                         handleRemove(input, tasks);
                         break;
                     default:
-                        System.out.println(LINE + "\nTo speak truth, sir, I don’t understand you at all:\n " +
+                        System.out.print(LINE + "\nTo speak truth, sir, I don’t understand you at all:\n " +
                                 "I cannot keep up the conversation, because it has got out of my depth.\n" + LINE);
                 }
             }
             catch(JaneException e) {
-                System.out.println(LINE + "User input error\n" + e.getMessage() + LINE);
+                System.out.print(LINE + "User input error\n" + e.getMessage() + LINE);
             }
         }
         //System.out.println("Bye. Hope to see you again soon!\n" + LINE);
