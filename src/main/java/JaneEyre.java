@@ -136,9 +136,7 @@ public class JaneEyre {
         File f = new File("data/janeeyre.txt");
         ArrayList<Task> tasks = new ArrayList<Task>();
         try {
-            if (f.createNewFile()) {
-                System.out.println("File created: " + f.getName());
-            } else {
+            if (!f.createNewFile()) {
                 loadTaskArray(tasks);
             }
             return tasks;
