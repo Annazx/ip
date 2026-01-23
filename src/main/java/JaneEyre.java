@@ -19,31 +19,28 @@ public class JaneEyre {
         System.out.println(LINE);
     }
 
-    public static void handleMark(String input, ArrayList<Task> tasks) throws JaneException {
-        int i = 0;
+    public static int parseIndex(String input, int n) throws JaneException {
         try {
-            i = Integer.valueOf(input.substring(4).trim()) - 1;
+            int i = Integer.valueOf(input) - 1;
+            if (i < 0 || i >= n) {
+                throw new JaneException("Please use a valid index\n");
+            }
+            return i;
         } catch (NumberFormatException nfe) {
             throw new JaneException("Please enter a valid index\n");
         }
-        if (i < 0 || i >= tasks.size()) {
-            throw new JaneException("Please use a valid index\n");
-        }
+    }
+
+    public static void handleMark(String input, ArrayList<Task> tasks) throws JaneException {
+        int i = parseIndex(input.substring(4).trim(), tasks.size());
         tasks.get(i).mark(true);
         System.out.print(LINE + "Nice! I've marked this task as done:\n  "
                 + tasks.get(i) + "\n" + LINE);
     }
 
     public static void handleUnmark(String input, ArrayList<Task> tasks) throws JaneException {
-        int i = 0;
-        try {
-            i = Integer.valueOf(input.substring(6).trim()) - 1;
-        } catch (NumberFormatException nfe) {
-            throw new JaneException("Please enter a valid index\n");
-        }
-        if (i < 0 || i >= tasks.size()) {
-            throw new JaneException("Please use a valid index\n");
-        }
+
+        int i = parseIndex(input.substring(6).trim(), tasks.size());
         tasks.get(i).mark(false);
         System.out.print(LINE + "OK, I've marked this task as not done yet:\n  "
                 + tasks.get(i) + "\n" + LINE);
@@ -103,15 +100,7 @@ public class JaneEyre {
     }
 
     public static void handleRemove(String input, ArrayList<Task> tasks) throws JaneException {
-        int i = 0;
-        try {
-            i = Integer.valueOf(input.substring(6).trim()) - 1;
-        } catch (NumberFormatException nfe) {
-            throw new JaneException("Please enter a valid index\n");
-        }
-        if (i < 0 || i >= tasks.size()) {
-            throw new JaneException("Please use a valid index\n");
-        }
+        int i = parseIndex(input.substring(6).trim(), tasks.size());
         Task temp = tasks.get(i);
         tasks.remove(i);
         System.out.print(LINE + " Noted. I've removed this task\n  "
