@@ -21,8 +21,7 @@ public class JaneEyre {
 
     public static void updateData(ArrayList<Task> tasks) throws JaneException {
         File f = new File("./data/janeeyre.txt");
-        try {
-           FileWriter fw = new FileWriter(f);
+        try (FileWriter fw = new FileWriter(f)) {
            for (Task task : tasks) {
                fw.write(task.format() + "\n");
            }
