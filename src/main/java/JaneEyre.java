@@ -19,6 +19,20 @@ public class JaneEyre {
         System.out.println(LINE);
     }
 
+    public static void updateData(ArrayList<Task> tasks) throws JaneException {
+        File f = new File("./data/janeeyre.txt");
+        try {
+           FileWriter fw = new FileWriter(f);
+           for (Task task : tasks) {
+               fw.write(task.format() + "\n");
+           }
+           fw.close();
+        } catch (IOException e) {
+            throw new JaneException("The file could not be updated\n");
+        }
+
+    }
+
     public static int parseIndex(String input, int n) throws JaneException {
         try {
             int i = Integer.valueOf(input) - 1;
@@ -36,6 +50,7 @@ public class JaneEyre {
         tasks.get(i).mark(true);
         System.out.print(LINE + "Nice! I've marked this task as done:\n  "
                 + tasks.get(i) + "\n" + LINE);
+        updateData(tasks);
     }
 
     public static void handleUnmark(String input, ArrayList<Task> tasks) throws JaneException {
@@ -44,6 +59,7 @@ public class JaneEyre {
         tasks.get(i).mark(false);
         System.out.print(LINE + "OK, I've marked this task as not done yet:\n  "
                 + tasks.get(i) + "\n" + LINE);
+        updateData(tasks);
     }
 
     public static void addTask(Task task, ArrayList<Task> tasks) {
@@ -105,6 +121,7 @@ public class JaneEyre {
         tasks.remove(i);
         System.out.print(LINE + " Noted. I've removed this task\n  "
                 + temp + "\n" + String.format("Now you have %d tasks in the list.\n", tasks.size())+ LINE);
+        updateData(tasks);
     }
 
     public static void loadTaskArray(ArrayList<Task> arr) throws JaneException {
