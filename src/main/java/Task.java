@@ -7,7 +7,7 @@ public class Task {
         this.isDone = false;
     }
 
-    public Task(String description, boolean isDone) {
+    public Task(boolean isDone, String description) {
         this.description = description;
         this.isDone = isDone;
     }
@@ -22,5 +22,9 @@ public class Task {
 
     public String toString() {
         return String.format("[%s] %s", getStatusIcon(), description);
+    }
+
+    public String format() {
+        return String.format("%d,%s", isDone ? 1 : 0, description);
     }
 }

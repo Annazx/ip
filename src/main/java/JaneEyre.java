@@ -1,5 +1,10 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class JaneEyre {
     private static final String LINE =
             "____________________________________________________________\n";
@@ -46,6 +51,14 @@ public class JaneEyre {
 
     public static void addTask(Task task, ArrayList<Task> tasks) {
         tasks.add(task);
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter("data/janeeyre.txt", true);
+            fw.write(task.format() + "\n");
+            fw.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.print(LINE + "Got it. I've added this task:\n  "
                 + tasks.get(tasks.size() - 1).toString()
                 + "\n" + String.format("Now you have %d tasks in the list", tasks.size()) + "\n"
@@ -105,12 +118,58 @@ public class JaneEyre {
                 + temp + "\n" + String.format("Now you have %d tasks in the list.\n", tasks.size())+ LINE);
     }
 
-    public static void main(String[] args) {
+    public static void loadTaskArray(ArrayList<Task> arr) throws JaneException {
+        File f = new File("./data/janeeyre.txt");
+        try {
+            Scanner s = new Scanner(f);
+            while (s.hasNext()) {
+                String[] argsArr = s.nextLine().split(",");
+                switch (argsArr[0]) {
+                    case "T":
+                        arr.add(Todo.loadTodo(argsArr));
+                        break;
+                    case "E":
+                        arr.add(Event.loadEvent(argsArr));
+                        break;
+                    case "D":
+                        arr.add(Deadline.loadDeadline(argsArr));
+                        break;
+                    default:
+                        throw new JaneException("Oh dear, an error has occurred\n");
+                }
+            }
+        } catch (FileNotFoundException e){
+            throw new JaneException("Oh dear, an error has occurred\n");
+        }
+    }
+
+    public static ArrayList<Task> loadData() throws JaneException {
+        File f = new File("data/janeeyre.txt");
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        try {
+            if (f.createNewFile()) {
+                System.out.println("File created: " + f.getName());
+            } else {
+                loadTaskArray(tasks);
+            }
+            return tasks;
+        } catch (IOException e) {
+            throw new JaneException("An error occurred\n");
+        }
+    }
+
+    public static void main(String[] args) throws JaneException {
         System.out.print(LINE + "Hello, I'm Jane Eyre\n");
         System.out.print("What can I do for you?\n" + LINE);
 
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>(100);
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        try {
+            tasks = loadData();
+        }
+        catch (JaneException j) {
+            throw new JaneException("help");
+        }
         boolean isDone = false;
         while (!isDone) {
             String input = scanner.nextLine().trim();
