@@ -1,11 +1,15 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class JaneEyre {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-dd HHmm");
     private static final String LINE =
             "____________________________________________________________\n";
     public static void taskListPrinter(ArrayList<Task> tasks) throws JaneException {
@@ -25,7 +29,7 @@ public class JaneEyre {
            for (Task task : tasks) {
                fw.write(task.format() + "\n");
            }
-           fw.close();
+           //fw.close();
         } catch (IOException e) {
             throw new JaneException("The file could not be updated\n");
         }
@@ -82,12 +86,18 @@ public class JaneEyre {
             int end = input.indexOf("/to");
             //System.out.println(String.format("%d %d", start, end));
             String des = input.substring(5, start).trim();
-            String from = input.substring(5 + start, end).trim();
-            String to = input.substring(end + 3).trim();
-            if (des.isEmpty() || from.isEmpty() || to.isEmpty()) {
+            String fromStr = input.substring(5 + start, end).trim();
+            String toStr = input.substring(end + 3).trim();
+            if (des.isEmpty() || fromStr.isEmpty() || toStr.isEmpty()) {
                 throw new JaneException("Empty field\nUsage: event [task] /from [start] /to [end]\n");
             }
-            addTask(new Event(des, from, to), tasks);
+            try {
+                LocalDateTime from = LocalDateTime.parse(fromStr, formatter);
+                LocalDateTime to = LocalDateTime.parse(toStr, formatter);
+                addTask(new Event(des, from, to), tasks);
+            } catch (DateTimeParseException e) {
+                throw new JaneException("Invalid Input\nUsage: [day]/[month]/[year] [time (24 hour clock)]\n");
+            }
         } else {
             throw new JaneException("Usage: event [task] /from [start] /to [end]\n");
         }
@@ -97,11 +107,16 @@ public class JaneEyre {
         if (input.contains("/by")) {
             int start = input.indexOf("/by");
             String des = input.substring(8, start).trim();
-            String by = input.substring(start + 3).trim();
-            if (des.isEmpty() || by.isEmpty()) {
+            if (des.isEmpty()) {
                 throw new JaneException("Empty field\nUsage: deadline [task] /by [time]\n");
             }
-            addTask(new Deadline(des, by), tasks);
+            String byStr = input.substring(start + 3).trim();
+            try {
+                LocalDateTime by = LocalDateTime.parse(byStr, formatter);
+                addTask(new Deadline(des, by), tasks);
+            } catch (DateTimeParseException e) {
+                throw new JaneException("Invalid Input\nUsage: [day]/[month]/[year] [time (24 hour clock)]\n");
+            }
         } else {
             throw new JaneException("Usage: deadline [task] /by [time]\n");
         }
