@@ -84,7 +84,6 @@ public class JaneEyre {
         if (input.contains("/from") && input.contains("/to")) {
             int start = input.indexOf("/from");
             int end = input.indexOf("/to");
-            //System.out.println(String.format("%d %d", start, end));
             String des = input.substring(5, start).trim();
             String fromStr = input.substring(5 + start, end).trim();
             String toStr = input.substring(end + 3).trim();
