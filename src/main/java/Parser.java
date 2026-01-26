@@ -4,14 +4,14 @@ import java.time.format.DateTimeParseException;
 
 public class Parser {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d HHmm");
-    private static final String LINE =
-            "____________________________________________________________\n";
     private Storage storage;
     private TaskList tasks;
+    private Ui ui;
 
     Parser(Storage storage, TaskList tasks) {
         this.storage = storage;
         this.tasks = tasks;
+        this.ui = new Ui();
     }
 
     public int parseIndex(String input, int n) throws JaneException {
@@ -29,8 +29,7 @@ public class Parser {
     public void handleMark(String input) throws JaneException {
         int i = parseIndex(input.substring(4).trim(), tasks.size());
         tasks.mark(i);
-        System.out.print(LINE + "Nice! I've marked this task as done:\n  "
-                + tasks.get(i) + "\n" + LINE);
+        ui.printMark(tasks.get(i));
         storage.updateData(tasks);
     }
 
@@ -38,18 +37,14 @@ public class Parser {
 
         int i = parseIndex(input.substring(6).trim(), tasks.size());
         tasks.unMark(i);
-        System.out.print(LINE + "OK, I've marked this task as not done yet:\n  "
-                + tasks.get(i) + "\n" + LINE);
+        ui.printUnmark(tasks.get(i));
         storage.updateData(tasks);
     }
 
     public void addTask(Task task) {
         tasks.addTask(task);
         storage.storeTask(task, tasks);
-        System.out.print(LINE + "Got it. I've added this task:\n  "
-                + tasks.get(tasks.size() - 1).toString()
-                + "\n" + String.format("Now you have %d tasks in the list", tasks.size()) + "\n"
-                + LINE);
+        ui.printAdd(tasks.get(tasks.size() - 1), tasks.size());
     }
 
     public void handleEvent(String input) throws JaneException {
@@ -104,8 +99,7 @@ public class Parser {
         int i = parseIndex(input.substring(6).trim(), tasks.size());
         Task temp = tasks.get(i);
         tasks.removeTask(i);
-        System.out.print(LINE + " Noted. I've removed this task\n  "
-                + temp + "\n" + String.format("Now you have %d tasks in the list.\n", tasks.size())+ LINE);
+        ui.printRemove(temp, tasks.size());
         storage.updateData(tasks);
     }
 }
