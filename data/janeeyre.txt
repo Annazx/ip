@@ -1,4 +1,4 @@
-T,0,make red velvet cupcakes /by tomorrow
-T,1,books
-D,0,homework,2026-01-26T15:00
+D,1,homework,2026-01-26T15:00
 E,1,see stars,2026-01-30T19:20,2026-01-30T20:15
+T,1,assignment 1
+T,0,go dancing
