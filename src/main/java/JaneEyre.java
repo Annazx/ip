@@ -12,7 +12,19 @@ public class JaneEyre {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-dd HHmm");
     private static final String LINE =
             "____________________________________________________________\n";
-    public static void taskListPrinter(TaskList tasks) throws JaneException {
+    private Storage storage;
+    private TaskList tasks;
+
+    JaneEyre(String filePath) {
+        storage = new Storage(filePath);
+        try {
+            tasks = storage.loadData();
+        } catch (JaneException e) {
+            tasks = new TaskList();
+        }
+    }
+
+    public void taskListPrinter(TaskList tasks) throws JaneException {
         System.out.print(LINE);
         if (tasks.isEmpty()) {
             throw new JaneException("Your task list is currently empty\n");
@@ -21,20 +33,7 @@ public class JaneEyre {
         System.out.println(LINE);
     }
 
-    public static void updateData(TaskList tasks) throws JaneException {
-        File f = new File("./data/janeeyre.txt");
-        try (FileWriter fw = new FileWriter(f)) {
-           for (Task task : tasks.getTasks()) {
-               fw.write(task.format() + "\n");
-           }
-           //fw.close();
-        } catch (IOException e) {
-            throw new JaneException("The file could not be updated\n");
-        }
-
-    }
-
-    public static int parseIndex(String input, int n) throws JaneException {
+    public int parseIndex(String input, int n) throws JaneException {
         try {
             int i = Integer.parseInt(input) - 1;
             if (i < 0 || i >= n) {
@@ -46,40 +45,33 @@ public class JaneEyre {
         }
     }
 
-    public static void handleMark(String input, TaskList tasks) throws JaneException {
+    public void handleMark(String input, TaskList tasks) throws JaneException {
         int i = parseIndex(input.substring(4).trim(), tasks.size());
         tasks.mark(i);
         System.out.print(LINE + "Nice! I've marked this task as done:\n  "
                 + tasks.get(i) + "\n" + LINE);
-        updateData(tasks);
+        storage.updateData(tasks);
     }
 
-    public static void handleUnmark(String input, TaskList tasks) throws JaneException {
+    public void handleUnmark(String input, TaskList tasks) throws JaneException {
 
         int i = parseIndex(input.substring(6).trim(), tasks.size());
         tasks.unMark(i);
         System.out.print(LINE + "OK, I've marked this task as not done yet:\n  "
                 + tasks.get(i) + "\n" + LINE);
-        updateData(tasks);
+        storage.updateData(tasks);
     }
 
-    public static void addTask(Task task, TaskList tasks) {
+    public void addTask(Task task, TaskList tasks) {
         tasks.addTask(task);
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter("data/janeeyre.txt", true);
-            fw.write(task.format() + "\n");
-            fw.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        storage.storeTask(task, tasks);
         System.out.print(LINE + "Got it. I've added this task:\n  "
                 + tasks.get(tasks.size() - 1).toString()
                 + "\n" + String.format("Now you have %d tasks in the list", tasks.size()) + "\n"
                 + LINE);
     }
 
-    public static void handleEvent(String input, TaskList tasks) throws JaneException {
+    public void handleEvent(String input, TaskList tasks) throws JaneException {
         if (input.contains("/from") && input.contains("/to")) {
             int start = input.indexOf("/from");
             int end = input.indexOf("/to");
@@ -101,7 +93,7 @@ public class JaneEyre {
         }
     }
 
-    public static void handleDeadline(String input, TaskList tasks) throws JaneException {
+    public void handleDeadline(String input, TaskList tasks) throws JaneException {
         if (input.contains("/by")) {
             int start = input.indexOf("/by");
             String des = input.substring(8, start).trim();
@@ -120,71 +112,34 @@ public class JaneEyre {
         }
     }
 
-    public static void handleTodo(String input, TaskList tasks) throws JaneException {
+    public void handleTodo(String input, TaskList tasks) throws JaneException {
         if (input.substring(4).trim().isEmpty()) {
             throw new JaneException("Usage: todo [task]\n");
         }
         addTask(new Todo(input.substring(4).trim()), tasks);
     }
 
-    public static void handleRemove(String input, TaskList tasks) throws JaneException {
+    public void handleRemove(String input, TaskList tasks) throws JaneException {
         int i = parseIndex(input.substring(6).trim(), tasks.size());
         Task temp = tasks.get(i);
         tasks.removeTask(i);
         System.out.print(LINE + " Noted. I've removed this task\n  "
                 + temp + "\n" + String.format("Now you have %d tasks in the list.\n", tasks.size())+ LINE);
-        updateData(tasks);
+        storage.updateData(tasks);
     }
 
-    public static void loadTaskArray(TaskList arr) throws JaneException {
-        File f = new File("./data/janeeyre.txt");
-        try {
-            Scanner s = new Scanner(f);
-            while (s.hasNext()) {
-                String[] argsArr = s.nextLine().split(",");
-                switch (argsArr[0]) {
-                    case "T":
-                        arr.addTask(Todo.loadTodo(argsArr));
-                        break;
-                    case "E":
-                        arr.addTask(Event.loadEvent(argsArr));
-                        break;
-                    case "D":
-                        arr.addTask(Deadline.loadDeadline(argsArr));
-                        break;
-                    default:
-                        throw new JaneException("Oh dear, an error has occurred\n");
-                }
-            }
-        } catch (FileNotFoundException e){
-            throw new JaneException("Oh dear, an error has occurred\n");
-        }
-    }
-
-    public static TaskList loadData() throws JaneException {
-        File f = new File("data/janeeyre.txt");
-        TaskList tasks = new TaskList();
-        try {
-            if (!f.createNewFile()) {
-                loadTaskArray(tasks);
-            }
-            return tasks;
-        } catch (IOException e) {
-            throw new JaneException("An error occurred\n");
-        }
-    }
-
-    public static void main(String[] args) throws JaneException {
+    public void run() {
         System.out.print(LINE + "Hello, I'm Jane Eyre\n");
         System.out.print("What can I do for you?\n" + LINE);
 
         Scanner scanner = new Scanner(System.in);
         TaskList tasks = new TaskList();
         try {
-            tasks = loadData();
+            tasks = storage.loadData(); //LOOK AT ME
         }
         catch (JaneException j) {
-            throw new JaneException("help");
+            System.out.println("error loading tasks\n");
+            j.printStackTrace();
         }
         boolean isDone = false;
         while (!isDone) {
@@ -226,5 +181,9 @@ public class JaneEyre {
                 System.out.print(LINE + "User input error\n" + e.getMessage() + LINE);
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new JaneEyre("data/janeeyre.txt").run();
     }
 }
