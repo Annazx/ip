@@ -1,3 +1,4 @@
+package jane;
 import java.util.Scanner;
 
 public class JaneEyre {
@@ -17,13 +18,6 @@ public class JaneEyre {
 
     public void run() {
         Scanner scanner = new Scanner(System.in);
-        TaskList tasks = new TaskList();
-        try {
-            tasks = storage.loadData(); //LOOK AT ME
-        }
-        catch (JaneException j) {
-            System.out.println("error loading tasks\n");
-        }
         Parser parser = new Parser(storage, tasks);
         boolean isDone = false;
         ui.printGreet();
@@ -62,7 +56,7 @@ public class JaneEyre {
                 }
             }
             catch(JaneException e) {
-                ui.printUserError();
+                ui.printUserError(e.getMessage());
             }
         }
     }

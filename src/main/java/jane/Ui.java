@@ -1,3 +1,5 @@
+package jane;
+
 public class Ui {
     private static final String LINE =
             "____________________________________________________________\n";
@@ -25,8 +27,8 @@ public class Ui {
         System.out.println("Bye. Hope to see you again soon!\n" + LINE);
     }
 
-    public void printUserError() {
-        System.out.print(LINE + "User input error\n" + LINE);
+    public void printUserError(String e) {
+        System.out.print(LINE + e + LINE);
     }
 
     public void printMark(Task task) {
