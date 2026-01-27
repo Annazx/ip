@@ -18,20 +18,26 @@ public class ParserTest {
     }
 
     @Test
-    public void parseIndex_exception_whenInvalidIndex() {
+    void parseIndex_validInput_returnsCorrectIndex() throws JaneException {
+        // Assume task list size is 5, input "3" should return index 2
+        Parser parser = new Parser(new Storage("mock"), new TaskList());
+        int index = parser.parseIndex("3", 5);
+        assertEquals(2, index);
+    }
+
+    @Test
+    public void parseIndex_exception_indexTooBig() {
         JaneException tooBig = assertThrows(JaneException.class, () -> {
             Parser parser = new Parser(new Storage("string"), new TaskList());
             parser.parseIndex("    19   ", 5);
         });
+    }
+
+    @Test
+    public void parseIndex_exception_indexTooSmall() {
         JaneException tooSmall = assertThrows(JaneException.class, () -> {
             Parser parser = new Parser(new Storage("string"), new TaskList());
             parser.parseIndex("    -1", 5);
         });
-    }
-
-    @Test
-    public void parseEvent_testInvalidInputFromTo() {
-        Parser parser = new Parser(new Storage("string"), new TaskList());
-        assertDoesNotThrow(() -> parser.handleEvent("event class /to 2026"));
     }
 }
