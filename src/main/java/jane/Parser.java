@@ -23,7 +23,7 @@ public class Parser {
             }
             return i;
         } catch (NumberFormatException nfe) {
-            throw new JaneException("Please enter a valid index\n");
+            throw new JaneException("Please use a valid index\n");
         }
     }
 
@@ -50,11 +50,17 @@ public class Parser {
 
     public void handleEvent(String input) throws JaneException {
         if (input.contains("/from") && input.contains("/to")) {
-            int start = input.indexOf("/from");
-            int end = input.indexOf("/to");
-            String des = input.substring(5, start).trim();
-            String fromStr = input.substring(5 + start, end).trim();
-            String toStr = input.substring(end + 3).trim();
+            String[] parts = input.split("/from");
+            if (parts.length < 2) {
+                throw new JaneException("Missing field Error\nUsage: event [task] /from [start] /to [end]\n");
+            }
+            String[] dates = parts[1].split("/to");
+            if (dates.length < 2) {
+                    throw new JaneException("Empty field\nUsage: event [task] /from [start] /to [end]\n");
+            }
+            String des = parts[0].trim();
+            String fromStr = dates[0].trim();
+            String toStr = dates[1].trim();
             if (des.isEmpty() || fromStr.isEmpty() || toStr.isEmpty()) {
                 throw new JaneException("Empty field\nUsage: event [task] /from [start] /to [end]\n");
             }
