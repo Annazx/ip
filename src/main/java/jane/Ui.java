@@ -5,10 +5,10 @@ public class Ui {
             "____________________________________________________________\n";
 
     public void taskListPrinter(TaskList tasks) throws JaneException {
-        System.out.print(LINE);
         if (tasks.isEmpty()) {
             throw new JaneException("Your task list is currently empty\n");
         }
+        System.out.print(LINE);
         System.out.print(tasks);
         System.out.println(LINE);
     }
