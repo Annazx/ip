@@ -50,7 +50,7 @@ public class Parser {
 
     public void handleEvent(String input) throws JaneException {
         if (input.contains("/from") && input.contains("/to")) {
-            String[] parts = input.split("/from");
+            String[] parts = input.substring(5).split("/from");
             if (parts.length < 2) {
                 throw new JaneException("Missing field Error\nUsage: event [task] /from [start] /to [end]\n");
             }
