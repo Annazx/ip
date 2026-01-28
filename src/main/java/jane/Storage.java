@@ -63,12 +63,20 @@ public class Storage {
     public TaskList loadData() throws JaneException {
         TaskList tasks = new TaskList();
         try {
-            if (!file.createNewFile()) {
-                loadTaskArray(tasks);
+            File parentDir = file.getParentFile();
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();   // creates data/ if missing
             }
+
+            if (file.exists()) {
+                loadTaskArray(tasks);
+            } else {
+                file.createNewFile();
+            }
+
             return tasks;
         } catch (IOException e) {
-            throw new JaneException("An error occurred\n");
+            throw new JaneException("An error occurred while loading data\n");
         }
     }
 }
