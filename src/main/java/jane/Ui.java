@@ -24,7 +24,7 @@ public class Ui {
     }
 
     public void printBye() {
-        System.out.println("Bye. Hope to see you again soon!\n" + LINE);
+        System.out.println(LINE + "Bye. Hope to see you again soon!\n" + LINE);
     }
 
     public void printUserError(String e) {
