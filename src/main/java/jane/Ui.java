@@ -49,7 +49,12 @@ public class Ui {
     }
 
     public void printRemove(Task task, int i) {
-        System.out.print(LINE + " Noted. I've removed this task\n  "
+        System.out.print(LINE + "Noted. I've removed this task\n  "
                 + task + "\n" + String.format("Now you have %d tasks in the list.\n", i)+ LINE);
+    }
+
+    public void printFind(String list) {
+        System.out.print(LINE + "Here are the matching tasks in your list:\n"
+                + list + LINE);
     }
 }

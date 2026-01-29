@@ -109,4 +109,19 @@ public class Parser {
         ui.printRemove(temp, tasks.size());
         storage.updateData(tasks);
     }
+
+    public void handleFind(String[] parts) throws JaneException {
+        if (parts.length < 2) {
+            throw new JaneException("No keyword given\n");
+        }
+        String list = "";
+        for (int i = 1; i < parts.length; i++) {
+            for (int j = 0; j < tasks.size(); j++) {
+                if (tasks.get(j).toString().contains(parts[i])) {
+                    list += tasks.get(j).toString() + "\n";
+                }
+            }
+        }
+        ui.printFind(list);
+    }
 }

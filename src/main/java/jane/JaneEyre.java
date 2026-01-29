@@ -2,9 +2,9 @@ package jane;
 import java.util.Scanner;
 
 public class JaneEyre {
-    private Storage storage;
+    private final Storage storage;
     private TaskList tasks;
-    private Ui ui;
+    private final Ui ui;
 
     JaneEyre(String filePath) {
         storage = new Storage(filePath);
@@ -23,6 +23,7 @@ public class JaneEyre {
         ui.printGreet();
         while (!isDone) {
             String input = scanner.nextLine().trim();
+            String[] parts = input.split(" ");
             String commandWord = input.split(" ")[0];
             try {
                 switch (commandWord) {
@@ -50,6 +51,9 @@ public class JaneEyre {
                         break;
                     case "delete":
                         parser.handleRemove(input);
+                        break;
+                    case "find":
+                        parser.handleFind(parts);
                         break;
                     default:
                         ui.printCannotUnderstand();
