@@ -1,11 +1,27 @@
 package jane;
 import java.util.Scanner;
 
+/**
+ * Main entry point of the JaneEyre task management application.
+ * Handles program initialization and the command execution loop.
+ */
 public class JaneEyre {
+
+    /** Storage handler for loading and saving tasks */
     private final Storage storage;
+
+    /** List of tasks currently managed by the application */
     private TaskList tasks;
+
+    /** User interface for interacting with the user */
     private final Ui ui;
 
+    /**
+     * Constructs the JaneEyre application using the given file path.
+     * Loads existing tasks from storage if available.
+     *
+     * @param filePath Path to the data file used for storage
+     */
     JaneEyre(String filePath) {
         storage = new Storage(filePath);
         this.ui = new Ui();
@@ -16,6 +32,9 @@ public class JaneEyre {
         }
     }
 
+    /**
+     * Starts the application and processes user commands until exit.
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
         Parser parser = new Parser(storage, tasks);
@@ -65,6 +84,11 @@ public class JaneEyre {
         }
     }
 
+    /**
+     * Launches the JaneEyre application.
+     *
+     * @param args Command-line arguments (not used)
+     */
     public static void main(String[] args) {
         new JaneEyre("data/janeeyre.txt").run();
     }

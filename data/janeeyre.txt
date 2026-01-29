@@ -3,3 +3,5 @@ D,1,ma2108 homework,2026-01-30T16:00
 E,0,test,2026-01-01T13:00,2026-01-03T17:00
 D,1,tutorial reflection,2026-02-13T23:59
 E,0,return books,2026-09-01T12:00,2026-09-01T12:30
+E,0,teach at kindergarten,2026-03-11T10:00,2026-03-11T11:00
+E,0,see stars,2026-01-30T20:15,2026-01-30T21:00

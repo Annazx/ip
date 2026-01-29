@@ -1,20 +1,26 @@
 package jane;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Represents a list of tasks managed by the application.
+ * Provides basic operations for adding, removing, and accessing tasks.
+ */
 public class TaskList {
+    /** Internal list storing all tasks */
     private ArrayList<Task> tasks;
 
-    TaskList(ArrayList<Task> tasks) {
-        this.tasks = tasks;
-    }
-
+    /**
+     * Constructs an empty TaskList.
+     */
     TaskList() {
         this.tasks = new ArrayList<Task>();
     }
 
+    /**
+     * Returns a formatted string representation of all tasks.
+     *
+     * @return Numbered list of tasks as a string
+     */
     @Override
     public String toString() {
         StringBuilder formatBuilder = new StringBuilder();
@@ -24,35 +30,71 @@ public class TaskList {
         return formatBuilder.toString();
     }
 
+    /**
+     * Adds a task to the task list.
+     *
+     * @param task Task to be added
+     */
     public void addTask(Task task) {
         tasks.add(task);
     }
 
+    /**
+     * Removes a task at the specified index.
+     *
+     * @param i Index of the task to remove (0-based)
+     */
     public void removeTask(int i) {
         tasks.remove(i);
     }
 
+    /**
+     * Marks the task at the specified index as completed.
+     *
+     * @param i Index of the task to mark (0-based)
+     */
     public void mark(int i) {
         tasks.get(i).mark(true);
     }
 
+    /**
+     * Marks the task at the specified index as not completed.
+     *
+     * @param i Index of the task to unmark (0-based)
+     */
     public void unMark(int i) {
         tasks.get(i).mark(false);
     }
 
-    public int size() {
-        return tasks.size();
-    }
-
+    /**
+     * Returns the underlying list of tasks.
+     *
+     * @return List containing all tasks
+     */
     public ArrayList<Task> getTasks() {
         return tasks;
     }
 
+    /**
+     * Returns the task at the specified index.
+     *
+     * @param i Index of the task to retrieve (0-based)
+     * @return Task at the given index
+     */
     public Task get(int i) {
         return tasks.get(i);
     }
 
+    /**
+     * Checks whether the task list is empty.
+     *
+     * @return {@code true} if the list contains no tasks
+     */
     public boolean isEmpty() {
         return tasks.isEmpty();
+    }
+
+    public int getSize() {
+        return tasks.size();
     }
 }
