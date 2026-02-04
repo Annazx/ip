@@ -53,11 +53,11 @@ public class Parser {
      * @param input Full user command containing the task index
      * @throws JaneException If the index is invalid
      */
-    public void handleMark(String input) throws JaneException {
+    public String handleMark(String input) throws JaneException {
         int i = parseIndex(input.substring(4).trim(), tasks.getSize());
         tasks.mark(i);
-        ui.printMark(tasks.get(i));
         storage.updateData(tasks);
+        return ui.printMark(tasks.get(i));
     }
 
     /**
@@ -66,12 +66,13 @@ public class Parser {
      * @param input Full user command containing the task index
      * @throws JaneException If the index is invalid
      */
-    public void handleUnmark(String input) throws JaneException {
+    public String handleUnmark(String input) throws JaneException {
 
         int i = parseIndex(input.substring(6).trim(), tasks.getSize());
         tasks.unMark(i);
-        ui.printUnmark(tasks.get(i));
+
         storage.updateData(tasks);
+        return ui.printUnmark(tasks.get(i));
     }
 
     /**
@@ -79,10 +80,10 @@ public class Parser {
      *
      * @param task Task to be added
      */
-    public void addTask(Task task) {
+    public String addTask(Task task) {
         tasks.addTask(task);
         storage.storeTask(task, tasks);
-        ui.printAdd(tasks.get(tasks.getSize() - 1), tasks.getSize());
+        return ui.printAdd(tasks.get(tasks.getSize() - 1), tasks.getSize());
     }
 
     /**
@@ -91,7 +92,7 @@ public class Parser {
      * @param input Full user command for creating an event
      * @throws JaneException If required fields are missing or date format is invalid
      */
-    public void handleEvent(String input) throws JaneException {
+    public String handleEvent(String input) throws JaneException {
         if (input.contains("/from") && input.contains("/to")) {
             String[] parts = input.substring(5).split("/from");
             if (parts.length < 2) {
@@ -110,7 +111,7 @@ public class Parser {
             try {
                 LocalDateTime from = LocalDateTime.parse(fromStr, FORMATTER);
                 LocalDateTime to = LocalDateTime.parse(toStr, FORMATTER);
-                addTask(new Event(des, from, to));
+                return addTask(new Event(des, from, to));
             } catch (DateTimeParseException e) {
                 throw new JaneException("Invalid Input\nUsage: [day]/[month]/[year] [time (24 hour clock)]\n");
             }
@@ -125,7 +126,7 @@ public class Parser {
      * @param input Full user command for creating a deadline
      * @throws JaneException If required fields are missing or date format is invalid
      */
-    public void handleDeadline(String input) throws JaneException {
+    public String handleDeadline(String input) throws JaneException {
         if (input.contains("/by")) {
             int start = input.indexOf("/by");
             String des = input.substring(8, start).trim();
@@ -135,7 +136,7 @@ public class Parser {
             String byStr = input.substring(start + 3).trim();
             try {
                 LocalDateTime by = LocalDateTime.parse(byStr, FORMATTER);
-                addTask(new Deadline(des, by));
+                return addTask(new Deadline(des, by));
             } catch (DateTimeParseException e) {
                 throw new JaneException("Invalid Input\nUsage: [day]/[month]/[year] [time (24 hour clock)]\n");
             }
@@ -150,11 +151,11 @@ public class Parser {
      * @param input Full user command for creating a todo
      * @throws JaneException If the task description is empty
      */
-    public void handleTodo(String input) throws JaneException {
+    public String handleTodo(String input) throws JaneException {
         if (input.substring(4).trim().isEmpty()) {
             throw new JaneException("Usage: todo [task]\n");
         }
-        addTask(new Todo(input.substring(4).trim()));
+        return addTask(new Todo(input.substring(4).trim()));
     }
 
     /**
@@ -163,12 +164,13 @@ public class Parser {
      * @param input Full user command containing the task index
      * @throws JaneException If the index is invalid
      */
-    public void handleRemove(String input) throws JaneException {
+    public String handleRemove(String input) throws JaneException {
         int i = parseIndex(input.substring(6).trim(), tasks.getSize());
         Task temp = tasks.get(i);
         tasks.removeTask(i);
-        ui.printRemove(temp, tasks.getSize());
+
         storage.updateData(tasks);
+        return ui.printRemove(temp, tasks.getSize());
     }
 
     /**
@@ -177,7 +179,7 @@ public class Parser {
      * @param parts Tokenized user input
      * @throws JaneException If no keyword is provided
      */
-    public void handleFind(String[] parts) throws JaneException {
+    public String handleFind(String[] parts) throws JaneException {
         if (parts.length < 2) {
             throw new JaneException("No keyword given\n");
         }
@@ -189,6 +191,6 @@ public class Parser {
                 }
             }
         }
-        ui.printFind(list);
+        return ui.printFind(list);
     }
 }

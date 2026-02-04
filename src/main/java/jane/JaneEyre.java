@@ -84,6 +84,38 @@ public class JaneEyre {
         }
     }
 
+    public String getResponse(String input) {
+        Parser parser = new Parser(storage, tasks);
+        String[] parts = input.split(" ");
+        String commandWord = input.split(" ")[0];
+        try {
+            switch (commandWord) {
+            case "bye":
+                return ui.printBye();
+            case "list":
+                return ui.taskListPrinter(tasks);
+            case "mark":
+                return parser.handleMark(input);
+            case "unmark":
+                return parser.handleUnmark(input);
+            case "todo":
+                return parser.handleTodo(input);
+            case "deadline":
+                return parser.handleDeadline(input);
+            case "event":
+                return parser.handleEvent(input);
+            case "delete":
+                return parser.handleRemove(input);
+            case "find":
+                return parser.handleFind(parts);
+            default:
+                return ui.printCannotUnderstand();
+            }
+        }
+        catch(JaneException e) {
+            return ui.printUserError(e.getMessage());
+        }
+    }
     /**
      * Launches the JaneEyre application.
      *
