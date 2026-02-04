@@ -51,5 +51,11 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getJaneDialog(response, janeImage)
         );
         userInput.clear();
+        // Check if the input was "bye" to close the application
+        if (input.trim().equalsIgnoreCase("bye")) {
+            javafx.animation.PauseTransition delay = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(1.5));
+            delay.setOnFinished(event -> javafx.application.Platform.exit());
+            delay.play();
+        }
     }
 }

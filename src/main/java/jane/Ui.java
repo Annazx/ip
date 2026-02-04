@@ -2,7 +2,7 @@ package jane;
 
 public class Ui {
     private static final String LINE =
-            "____________________________________________________________\n";
+            "";
 
     public String taskListPrinter(TaskList tasks) throws JaneException {
         if (tasks.isEmpty()) {
@@ -17,7 +17,7 @@ public class Ui {
     }
 
     public String printCannotUnderstand() {
-        return LINE + "\nTo speak truth, sir, I don’t understand you at all:\n "
+        return LINE + "\nTo speak truth, sir, I don't understand you at all:\n "
                 + "I cannot keep up the conversation, because it has got out of my depth.\n"
                 + LINE;
     }

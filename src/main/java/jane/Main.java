@@ -3,18 +3,12 @@ package jane;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Region;
-
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
+import javafx.scene.text.Font;
 
 
 public class Main extends Application {
@@ -22,11 +16,14 @@ public class Main extends Application {
 
     public void start(Stage stage) {
         try {
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Baskervville-VariableFont_wght.ttf"), 10);
             jane = new JaneEyre("data/janeeyre.txt");
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/main.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/dialog-box.css")).toExternalForm());
             fxmlLoader.<MainWindow>getController().setJane(jane);  // inject the Duke instance
             stage.show();
         } catch (IOException e) {
