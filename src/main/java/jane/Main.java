@@ -24,7 +24,7 @@ public class Main extends Application {
             stage.setScene(scene);
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/main.css")).toExternalForm());
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/dialog-box.css")).toExternalForm());
-            fxmlLoader.<MainWindow>getController().setJane(jane);  // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setJane(jane);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
