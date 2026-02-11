@@ -42,13 +42,58 @@ public class Event extends Task {
     }
 
     /**
+     * Constructs an Event task with an explicit completion status.
+     *
+     * @param isDone      Completion status of the task
+     * @param description Description of the event
+     * @param from        Start date and time of the event
+     * @param to          End date and time of the event
+     * @param tags        List of tags
+     */
+    public Event(boolean isDone, String description, LocalDateTime from, LocalDateTime to, TagList tags) {
+        super(isDone, description, tags);
+        this.from = from;
+        this.to = to;
+    }
+
+    /**
+     * Constructs an Event task with an explicit completion status.
+     *
+     * @param description Description of the event
+     * @param from        Start date and time of the event
+     * @param to          End date and time of the event
+     * @param tags        List of tags
+     */
+    public Event(String description, LocalDateTime from, LocalDateTime to, TagList tags) {
+        super(description, tags);
+        this.from = from;
+        this.to = to;
+    }
+
+    /**
      * Creates an Event object from a formatted storage representation.
      *
-     * @param s Array containing the stored event fields
+     * @param a Array containing the stored event fields
      * @return Reconstructed Event object
      */
-    public static Event loadEvent(String[] s) {
-        return new Event(s[1].equals("1"), s[2], LocalDateTime.parse(s[3]), LocalDateTime.parse(s[4]));
+    public static Event loadEvent(String[] a) {
+        boolean isDone = a[1].equals("1");
+        String desc = a[2];
+        TagList tags;
+        String fromStr;
+        String toStr;
+
+        if (a.length > 5) {
+            tags = TagList.loadTags(a[3]);
+            fromStr = a[4];
+            toStr = a[5];
+        } else {
+            assert a.length <= 5;
+            tags = new TagList();
+            fromStr = a[3];
+            toStr = a[4];
+        }
+        return new Event(isDone, desc, LocalDateTime.parse(fromStr), LocalDateTime.parse(toStr), tags);
     }
 
     /**

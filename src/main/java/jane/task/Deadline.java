@@ -22,6 +22,11 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    public Deadline(String description, LocalDateTime by, TagList tags) {
+        super(description, tags);
+        this.by = by;
+    }
+
     /**
      * Constructs a Deadline task with the specified completion status, description, and deadline time.
      * This is typically used when loading tasks from a data file.
@@ -30,8 +35,8 @@ public class Deadline extends Task {
      * @param description The description of the task.
      * @param by The date and time deadline for the task.
      */
-    public Deadline(boolean isDone, String description, LocalDateTime by) {
-        super(isDone, description);
+    public Deadline(boolean isDone, String description, LocalDateTime by, TagList tags) {
+        super(isDone, description, tags);
         this.by = by;
     }
 
@@ -39,12 +44,26 @@ public class Deadline extends Task {
      * Creates a Deadline task from an array of strings representing task data.
      * Expected array format: [type, isDone, description, byTime]
      *
-     * @param s An array of strings where index 1 is status ("1" for done),
+     * @param a An array of strings where index 1 is status ("1" for done),
      *          index 2 is description, and index 3 is the ISO-8601 formatted date string.
      * @return A new Deadline object initialized with the provided data.
      */
-    public static Deadline loadDeadline(String[] s) {
-        return new Deadline(s[1].equals("1"), s[2], LocalDateTime.parse(s[3]));
+    public static Deadline loadDeadline(String[] a) {
+        boolean isDone = a[1].equals("1");
+        String desc = a[2];
+        TagList tags;
+        String dateStr;
+
+        if (a.length > 4) {
+            tags = TagList.loadTags(a[3]);
+            dateStr = a[4];
+        } else {
+            tags = new TagList();
+            dateStr = a[3];
+        }
+
+        LocalDateTime by = LocalDateTime.parse(dateStr);
+        return new Deadline(isDone, desc, by, tags);
     }
 
 

@@ -7,6 +7,10 @@ import jane.task.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Parses user commands and executes the corresponding task operations.
@@ -30,6 +34,20 @@ public class Parser {
         this.storage = storage;
         this.tasks = tasks;
         this.ui = new Ui();
+    }
+
+    private TagList extractTags(String input) {
+        TagList tags = new TagList();
+        Pattern pattern = Pattern.compile("#(\\w+)");
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+            tags.addTag(new Tag(matcher.group(1)));
+        }
+        return tags;
+    }
+
+    private String removeTags(String input) {
+        return input.replaceAll("#\\w+", "").replaceAll("\\s+", " ").trim();
     }
 
     /**
@@ -73,7 +91,6 @@ public class Parser {
      * @throws JaneException If the index is invalid
      */
     public String handleUnmark(String input) throws JaneException {
-
         int i = parseIndex(input.substring(6).trim(), tasks.getSize());
         tasks.unMark(i);
 
@@ -95,10 +112,12 @@ public class Parser {
     /**
      * Handles creation of an Event task.
      *
-     * @param input Full user command for creating an event
+     * @param inputWithTags Full user command for creating an event
      * @throws JaneException If required fields are missing or date format is invalid
      */
-    public String handleEvent(String input) throws JaneException {
+    public String handleEvent(String inputWithTags) throws JaneException {
+        TagList tagList = extractTags(inputWithTags);
+        String input = removeTags(inputWithTags);
         if (input.contains("/from") && input.contains("/to")) {
             String[] parts = input.substring(5).split("/from");
             if (parts.length < 2) {
@@ -117,7 +136,7 @@ public class Parser {
             try {
                 LocalDateTime from = LocalDateTime.parse(fromStr, FORMATTER);
                 LocalDateTime to = LocalDateTime.parse(toStr, FORMATTER);
-                return addTask(new Event(des, from, to));
+                return addTask(new Event(des, from, to, tagList));
             } catch (DateTimeParseException e) {
                 throw new JaneException("Invalid Input\nUsage: [day]/[month]/[year] [time (24 hour clock)]\n");
             }
@@ -129,10 +148,12 @@ public class Parser {
     /**
      * Handles creation of a Deadline task.
      *
-     * @param input Full user command for creating a deadline
+     * @param inputWithTags Full user command for creating a deadline
      * @throws JaneException If required fields are missing or date format is invalid
      */
-    public String handleDeadline(String input) throws JaneException {
+    public String handleDeadline(String inputWithTags) throws JaneException {
+        TagList tagList = extractTags(inputWithTags);
+        String input = removeTags(inputWithTags);
         if (input.contains("/by")) {
             int start = input.indexOf("/by");
             String des = input.substring(8, start).trim();
@@ -142,7 +163,7 @@ public class Parser {
             String byStr = input.substring(start + 3).trim();
             try {
                 LocalDateTime by = LocalDateTime.parse(byStr, FORMATTER);
-                return addTask(new Deadline(des, by));
+                return addTask(new Deadline(des, by, tagList));
             } catch (DateTimeParseException e) {
                 throw new JaneException("Invalid Input\nUsage: [day]/[month]/[year] [time (24 hour clock)]\n");
             }
@@ -154,14 +175,16 @@ public class Parser {
     /**
      * Handles creation of a Todo task.
      *
-     * @param input Full user command for creating a todo
+     * @param inputWithTags Full user command for creating a todo
      * @throws JaneException If the task description is empty
      */
-    public String handleTodo(String input) throws JaneException {
+    public String handleTodo(String inputWithTags) throws JaneException {
+        TagList tagList = extractTags(inputWithTags);
+        String input = removeTags(inputWithTags);
         if (input.substring(4).trim().isEmpty()) {
             throw new JaneException("Usage: todo [task]\n");
         }
-        return addTask(new Todo(input.substring(4).trim()));
+        return addTask(new Todo(input.substring(4).trim(), tagList));
     }
 
     /**

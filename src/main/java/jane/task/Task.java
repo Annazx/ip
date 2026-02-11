@@ -1,5 +1,8 @@
 package jane.task;
 
+import java.util.Collections;
+import java.util.Set;
+
 /**
  * Represents a generic task with a description and completion status.
  * This class serves as a base class for more specific task types.
@@ -12,6 +15,9 @@ public class Task {
     /** Indicates whether the task has been completed. */
     private boolean isDone;
 
+    /** List of tags attached to task **/
+    private TagList tags;
+
     /**
      * Creates a new task that is initially not done.
      *
@@ -20,6 +26,7 @@ public class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        this.tags = new TagList();
     }
 
     /**
@@ -31,8 +38,20 @@ public class Task {
     public Task(boolean isDone, String description) {
         this.description = description;
         this.isDone = isDone;
+        this.tags = new TagList();
     }
 
+    public Task(boolean isDone, String description, TagList tags) {
+        this.description = description;
+        this.isDone = isDone;
+        this.tags = tags;
+    }
+
+    public Task(String description, TagList tags) {
+        this.description = description;
+        this.isDone = false;
+        this.tags = tags;
+    }
     /**
      * Returns a status icon representing whether the task is completed.
      *
@@ -53,13 +72,24 @@ public class Task {
     }
 
     /**
+     * Adds tag to tagList
+     *
+     * @param newTag  New tag to be added to tagList
+     *
+     */
+    public void addTag(Tag newTag) {
+        tags.addTag(newTag);
+    }
+
+
+    /**
      * Returns a user-friendly string representation of the task.
      *
      * @return A formatted string showing task status and description
      */
     public String toString() {
         assert description != null;
-        return String.format("[%s] %s", getStatusIcon(), description);
+        return String.format("[%s] %s%s", getStatusIcon(), description, tags.toString());
     }
 
     /**
@@ -69,6 +99,6 @@ public class Task {
      */
     public String format() {
         assert description != null;
-        return String.format("%d,%s", isDone ? 1 : 0, description);
+        return String.format("%d,%s,%s", isDone ? 1 : 0, description, tags);
     }
 }

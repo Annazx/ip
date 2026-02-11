@@ -25,6 +25,28 @@ public class Todo extends Task {
     }
 
     /**
+     * Creates a to-do task with the specified completion status.
+     *
+     * @param isDone      {@code true} if the task is completed
+     * @param description Description of the to-do task
+     * @param tags        List of tags
+     */
+    public Todo(boolean isDone, String description, TagList tags) {
+        super(isDone, description, tags);
+    }
+
+    /**
+     * Creates a to-do task with the specified completion status.
+     *
+     * @param description Description of the to-do task
+     * @param tags        List of tags
+     */
+    public Todo(String description, TagList tags) {
+        super(description, tags);
+    }
+
+
+    /**
      * Returns a user-friendly string representation of the to-do task.
      *
      * @return A formatted string prefixed with {@code [T]}
@@ -50,6 +72,16 @@ public class Todo extends Task {
      * @return A {@code Todo} reconstructed from the given data
      */
     public static Todo loadTodo(String[] a) {
-        return new Todo(a[1].equals("1"), a[2]);
+        boolean isDone = a[1].equals("1");
+        String desc;
+        TagList tags;
+        if (a.length > 3) {
+            desc = a[2];
+            tags = TagList.loadTags(a[3]);
+        } else {
+            desc = a[2];
+            tags = new TagList();
+        }
+        return new Todo(isDone, desc, tags);
     }
 }
