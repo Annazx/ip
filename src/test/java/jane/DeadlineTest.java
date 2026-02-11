@@ -47,7 +47,7 @@ public class DeadlineTest {
     @Test
     public void loadDeadline_validData_restoresCorrectly() {
         // Format: [type, isDone, description, byTime, tags]
-        String[] data = {"D", "1", "read chapter", "2023-10-10T18:00", "#study #fun #cs2103"};
+        String[] data = {"D", "1", "read chapter", "#study #fun #cs2103", "2023-10-10T18:00"};
 
         // Ensure TagList.loadTags("study") works correctly
         Deadline d = Deadline.loadDeadline(data);

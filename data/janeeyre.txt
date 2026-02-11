@@ -1,5 +1,4 @@
-D,1,ma2108 homework,2026-01-30T16:00
-E,0,return books,2026-09-01T12:00,2026-09-01T12:30
-T,1,eat lunch
-E,0,eat dinner,2026-04-02T13:00,2026-04-02T19:00
-T,0,reject empty inputs
+E,0,fix stupid code,,2026-02-11T13:00,2026-03-11T13:00
+D,0,dance,,2026-02-02T14:00
+E,0,i fixed my stupid code, #fun #yay #hurray #cs2103,2026-05-03T12:00,2026-05-04T19:00
+D,1,write star report, #dance #fun #hurray #test,2026-02-22T14:00
