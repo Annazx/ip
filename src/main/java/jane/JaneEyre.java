@@ -35,6 +35,7 @@ public class JaneEyre {
     public String getResponse(String input) {
         Parser parser = new Parser(storage, tasks);
         String[] parts = input.split(" ");
+        assert parts.length >= 1;
         String commandWord = input.split(" ")[0];
         try {
             switch (commandWord) {
