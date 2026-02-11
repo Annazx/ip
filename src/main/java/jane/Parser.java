@@ -55,6 +55,7 @@ public class Parser {
      */
     public String handleMark(String input) throws JaneException {
         int i = parseIndex(input.substring(4).trim(), tasks.getSize());
+        assert i > 0 && i < tasks.getSize();
         tasks.mark(i);
         storage.updateData(tasks);
         return ui.printMark(tasks.get(i));
@@ -166,6 +167,7 @@ public class Parser {
      */
     public String handleRemove(String input) throws JaneException {
         int i = parseIndex(input.substring(6).trim(), tasks.getSize());
+        assert i > 0 && i < tasks.getSize();
         Task temp = tasks.get(i);
         tasks.removeTask(i);
 

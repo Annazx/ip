@@ -31,11 +31,11 @@ public class Storage {
      * @throws JaneException If an I/O error occurs while writing to the file
      */
     public void updateData(TaskList tasks) throws JaneException {
+        assert file.exists();
         try (FileWriter fw = new FileWriter(file)) {
             for (Task task : tasks.getTasks()) {
                 fw.write(task.format() + "\n");
             }
-            //fw.close();
         } catch (IOException e) {
             throw new JaneException("The file could not be updated\n");
         }
@@ -50,9 +50,8 @@ public class Storage {
      * @throws RuntimeException If an I/O error occurs while writing to the file
      */
     public void storeTask(Task task, TaskList tasks) throws RuntimeException {
-        FileWriter fw = null;
         try {
-            fw = new FileWriter(file, true);
+            FileWriter fw = new FileWriter(file, true);
             fw.write(task.format() + "\n");
             fw.close();
         } catch (IOException e) {
@@ -73,17 +72,17 @@ public class Storage {
             while (s.hasNext()) {
                 String[] argsArr = s.nextLine().split(",");
                 switch (argsArr[0]) {
-                    case "T":
-                        arr.addTask(Todo.loadTodo(argsArr));
-                        break;
-                    case "E":
-                        arr.addTask(Event.loadEvent(argsArr));
-                        break;
-                    case "D":
-                        arr.addTask(Deadline.loadDeadline(argsArr));
-                        break;
-                    default:
-                        throw new JaneException("Oh dear, an error has occurred\n");
+                case "T":
+                    arr.addTask(Todo.loadTodo(argsArr));
+                    break;
+                case "E":
+                    arr.addTask(Event.loadEvent(argsArr));
+                    break;
+                case "D":
+                    arr.addTask(Deadline.loadDeadline(argsArr));
+                    break;
+                default:
+                    throw new JaneException("Oh dear, an error has occurred\n");
                 }
             }
         } catch (FileNotFoundException e){
@@ -104,8 +103,9 @@ public class Storage {
         TaskList tasks = new TaskList();
         try {
             File parentDir = file.getParentFile();
+            assert parentDir != null;
             if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs();   // creates data/ if missing
+                parentDir.mkdirs();
             }
 
             if (file.exists()) {

@@ -42,7 +42,7 @@ public class JaneEyre {
             case "bye":
                 return ui.printBye();
             case "list":
-                return ui.taskListPrinter(tasks);
+                return ui.printTaskList(tasks);
             case "mark":
                 return parser.handleMark(input);
             case "unmark":
