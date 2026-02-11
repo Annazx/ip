@@ -36,6 +36,11 @@ public class JaneEyre {
         }
     }
 
+    /**
+     * Parses the response from the user and has JaneBot respond accordingly
+     *
+     * @param input User input String
+     */
     public String getResponse(String input) {
         Parser parser = new Parser(storage, tasks);
         String[] parts = input.split(" ");
@@ -69,6 +74,7 @@ public class JaneEyre {
             return ui.printUserError(e.getMessage());
         }
     }
+
     /**
      * Launches the JaneEyre application.
      *
