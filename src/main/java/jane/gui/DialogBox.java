@@ -1,4 +1,4 @@
-package jane;
+package jane.gui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

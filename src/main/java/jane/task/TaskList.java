@@ -1,4 +1,5 @@
-package jane;
+package jane.task;
+
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,7 @@ public class TaskList {
     /**
      * Constructs an empty TaskList.
      */
-    TaskList() {
+    public TaskList() {
         this.tasks = new ArrayList<Task>();
     }
 

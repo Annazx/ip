@@ -1,7 +1,7 @@
-package jane;
+package jane.gui;
 
-import jane.DialogBox;
 import jane.JaneEyre;
+import jane.ui.Ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;

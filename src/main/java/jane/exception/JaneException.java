@@ -1,4 +1,4 @@
-package jane;
+package jane.exception;
 
 /**
  * Represents an exception specific to the Jane application.

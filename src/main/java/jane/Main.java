@@ -1,11 +1,12 @@
 package jane;
 
+import jane.gui.MainWindow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import java.awt.*;
+
 import java.io.IOException;
 import java.util.Objects;
 import javafx.scene.text.Font;

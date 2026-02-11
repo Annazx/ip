@@ -1,4 +1,4 @@
-package jane;
+package jane.task;
 
 /**
  * Represents a generic task with a description and completion status.

@@ -1,4 +1,8 @@
-package jane;
+package jane.ui;
+
+import jane.exception.JaneException;
+import jane.task.Task;
+import jane.task.TaskList;
 
 public class Ui {
 

@@ -1,4 +1,4 @@
-package jane;
+package jane.task;
 
 /**
  * Represents a to-do task without any associated date or time.

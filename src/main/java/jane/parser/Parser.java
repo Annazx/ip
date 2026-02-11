@@ -1,4 +1,9 @@
-package jane;
+package jane.parser;
+import jane.ui.Ui;
+import jane.exception.JaneException;
+import jane.storage.Storage;
+import jane.task.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -21,7 +26,7 @@ public class Parser {
      * @param storage Storage handler for persisting tasks
      * @param tasks   Task list managed by the application
      */
-    Parser(Storage storage, TaskList tasks) {
+    public Parser(Storage storage, TaskList tasks) {
         this.storage = storage;
         this.tasks = tasks;
         this.ui = new Ui();

@@ -1,4 +1,7 @@
-package jane;
+package jane.storage;
+import jane.exception.JaneException;
+import jane.task.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -19,7 +22,7 @@ public class Storage {
      *
      * @param filepath Path to the file used for storing task data
      */
-    Storage(String filepath) {
+    public Storage(String filepath) {
         // "./data/janeeyre.txt"
         this.file = new File(filepath);
     }
