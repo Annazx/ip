@@ -77,6 +77,7 @@ public class Event extends Task {
      * @return Reconstructed Event object
      */
     public static Event loadEvent(String[] a) {
+        assert a.length > 4;
         boolean isDone = a[1].equals("1");
         String desc = a[2];
         TagList tags;
@@ -88,7 +89,6 @@ public class Event extends Task {
             fromStr = a[4];
             toStr = a[5];
         } else {
-            assert a.length <= 5;
             tags = new TagList();
             fromStr = a[3];
             toStr = a[4];

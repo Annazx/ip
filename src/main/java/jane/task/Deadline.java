@@ -49,6 +49,7 @@ public class Deadline extends Task {
      * @return A new Deadline object initialized with the provided data.
      */
     public static Deadline loadDeadline(String[] a) {
+        assert a.length > 3;
         boolean isDone = a[1].equals("1");
         String desc = a[2];
         TagList tags;

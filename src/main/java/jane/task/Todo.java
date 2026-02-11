@@ -72,6 +72,7 @@ public class Todo extends Task {
      * @return A {@code Todo} reconstructed from the given data
      */
     public static Todo loadTodo(String[] a) {
+        assert a.length > 2;
         boolean isDone = a[1].equals("1");
         String desc;
         TagList tags;
