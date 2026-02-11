@@ -58,6 +58,7 @@ public class Task {
      * @return A formatted string showing task status and description
      */
     public String toString() {
+        assert description != null;
         return String.format("[%s] %s", getStatusIcon(), description);
     }
 
@@ -67,6 +68,7 @@ public class Task {
      * @return A formatted string containing completion status and description
      */
     public String format() {
+        assert description != null;
         return String.format("%d,%s", isDone ? 1 : 0, description);
     }
 }

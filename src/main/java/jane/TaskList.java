@@ -45,6 +45,7 @@ public class TaskList {
      * @param i Index of the task to remove (0-based)
      */
     public void removeTask(int i) {
+        assert i > 0 && i < tasks.size();
         tasks.remove(i);
     }
 
@@ -54,6 +55,7 @@ public class TaskList {
      * @param i Index of the task to mark (0-based)
      */
     public void mark(int i) {
+        assert i > 0 && i < tasks.size();
         tasks.get(i).mark(true);
     }
 
@@ -63,6 +65,7 @@ public class TaskList {
      * @param i Index of the task to unmark (0-based)
      */
     public void unMark(int i) {
+        assert i > 0 && i < tasks.size();
         tasks.get(i).mark(false);
     }
 
@@ -72,6 +75,7 @@ public class TaskList {
      * @return List containing all tasks
      */
     public ArrayList<Task> getTasks() {
+        assert tasks != null;
         return tasks;
     }
 
@@ -82,6 +86,7 @@ public class TaskList {
      * @return Task at the given index
      */
     public Task get(int i) {
+        assert i > 0 && i < tasks.size();
         return tasks.get(i);
     }
 
