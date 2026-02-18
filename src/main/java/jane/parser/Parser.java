@@ -62,11 +62,11 @@ public class Parser {
         try {
             int i = Integer.parseInt(input) - 1;
             if (i < 0 || i >= n) {
-                throw new JaneException("Please use a valid index\n");
+                throw new JaneException("A task at that index does not exist\n");
             }
             return i;
         } catch (NumberFormatException nfe) {
-            throw new JaneException("Please use a valid index\n");
+            throw new JaneException("Please use a number\n");
         }
     }
 
@@ -138,10 +138,10 @@ public class Parser {
                 LocalDateTime to = LocalDateTime.parse(toStr, FORMATTER);
                 return addTask(new Event(des, from, to, tagList));
             } catch (DateTimeParseException e) {
-                throw new JaneException("Invalid Input\nUsage: [day]/[month]/[year] [time (24 hour clock)]\n");
+                throw new JaneException("Incorrect date format\nUsage: yyyy-M-d HHmm\n");
             }
         } else {
-            throw new JaneException("Usage: event [task] /from [start] /to [end]\n");
+            throw new JaneException("Usage: event [task] /from yyyy-M-d HHmm /to yyyy-M-d HHmm\n");
         }
     }
 
@@ -158,17 +158,17 @@ public class Parser {
             int start = input.indexOf("/by");
             String des = input.substring(8, start).trim();
             if (des.isEmpty()) {
-                throw new JaneException("Empty field\nUsage: deadline [task] /by [time]\n");
+                throw new JaneException("Empty field\nUsage: deadline [task] /by yyyy-M-d HHmm\n");
             }
             String byStr = input.substring(start + 3).trim();
             try {
                 LocalDateTime by = LocalDateTime.parse(byStr, FORMATTER);
                 return addTask(new Deadline(des, by, tagList));
             } catch (DateTimeParseException e) {
-                throw new JaneException("Invalid Input\nUsage: [day]/[month]/[year] [time (24 hour clock)]\n");
+                throw new JaneException("Incorrect date format\nUsage: yyyy-M-d HHmm\n");
             }
         } else {
-            throw new JaneException("Usage: deadline [task] /by [time]\n");
+            throw new JaneException("Usage: deadline [task] /by yyyy-M-d HHmm\n");
         }
     }
 
