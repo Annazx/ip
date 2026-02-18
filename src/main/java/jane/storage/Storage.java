@@ -119,7 +119,7 @@ public class Storage {
 
             return tasks;
         } catch (IOException e) {
-            throw new JaneException("An error occurred while loading data\n");
+            throw new JaneException("An error occurred while loading the data :(\n");
         }
     }
 }
