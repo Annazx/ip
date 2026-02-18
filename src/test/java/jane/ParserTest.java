@@ -15,7 +15,7 @@ public class ParserTest {
             Parser parser = new Parser(new Storage("string"), new TaskList());
             parser.parseIndex("hello", 5);
         });
-        String expectedMessage = "Please use a valid index\n";
+        String expectedMessage = "Please use a number\n";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
