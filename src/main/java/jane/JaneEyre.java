@@ -69,8 +69,7 @@ public class JaneEyre {
             default:
                 return ui.printCannotUnderstand();
             }
-        }
-        catch(JaneException e) {
+        } catch(JaneException e) {
             return ui.printUserError(e.getMessage());
         }
     }
