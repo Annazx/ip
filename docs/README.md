@@ -1,30 +1,93 @@
-# JaneEyre User Guide
+# Jane Eyre - User Guide
 
-// Update the title above to match the actual product name
+Jane Eyre is a powerful CLI (Command Line Interface) application for managing your daily schedule.
 
-// Product screenshot goes here
+---
 
-// Product intro goes here
+## Command Format Notes
 
-## Adding deadlines
+> [!IMPORTANT]
+> * Words in `UPPER_CASE` are the parameters to be supplied by the user.  
+    >   *Example:* In `todo TASK`, `TASK` is a parameter: `todo read book`.
+> * Items in square brackets are optional.  
+    >   *Example:* `todo TASK [#TAG]` can be used as `todo read book #hobby` or just `todo read book`.
+> * Items with `…` after them can be used multiple times including zero times.  
+    >   *Example:* `[#TAG]…` can be used as `#urgent`, `#work #urgent`, or not at all.
+> * Extraneous parameters for commands that do not take parameters (such as `help`, `list`, `exit`) will be ignored.
 
-// Describe the action and its outcome.
+---
 
-// Give examples of usage
+## Command Summary
 
-Example: `keyword (optional arguments)`
+| Action | Format | Example |
+| :--- | :--- | :--- |
+| **Help** | `help` | `help` |
+| **Todo** | `todo TASK [#TAG]…` | `todo buy milk #grocery` |
+| **Deadline** | `deadline TASK /by yyyy-M-d HHmm [#TAG]…` | `deadline return book /by 2023-12-01 1800` |
+| **Event** | `event TASK /from yyyy-M-d HHmm /to yyyy-M-d HHmm [#TAG]…` | `event meeting /from 2023-10-10 1400 /to 10-10 1600` |
+| **Mark** | `mark INDEX` | `mark 1` |
+| **Unmark** | `unmark INDEX` | `unmark 1` |
+| **Find** | `find KEYWORD [MORE_KEYWORDS]…` | `find book` |
+| **Delete** | `delete INDEX` | `delete 2` |
+| **List** | `list` | `list` |
+| **Exit** | `exit` | `exit` |
 
-// A description of the expected outcome goes here
+---
 
-```
-expected output
-```
+## Features
 
-## Feature ABC
+### 1. View Help: `help`
+Displays a guide for all available commands.
+* **Format:** `help`
 
-// Feature details
+### 2. Add a To-Do: `todo`
+Adds a task without any date or time.
+* **Format:** `todo TASK [#TAG]…`
+* **Example:** `todo read book #leisure`
 
+### 3. Add a Deadline: `deadline`
+Adds a task that must be completed by a specific time.
+* **Format:** `deadline TASK /by yyyy-M-d HHmm [#TAG]…`
+* **Example:** `deadline submit report /by 2024-05-20 2359 #work`
 
-## Feature XYZ
+### 4. Add an Event: `event`
+Adds a task with a specific start and end time.
+* **Format:** `event TASK /from yyyy-M-d HHmm /to yyyy-M-d HHmm [#TAG]…`
+* **Example:** `event wedding /from 2024-06-12 1200 /to 2024-06-12 1800`
 
-// Feature details
+### 5. Tagging Tasks
+You can categorize tasks by adding one or more hashtags.
+* **Usage:** Append `#TAGNAME` to the end of any adding command.
+* **Example:** `todo gym #health #fitness`
+
+### 6. Mark Task as Done: `mark`
+Marks a task at a specific index as completed.
+* **Format:** `mark INDEX`
+* **Example:** `mark 1`
+
+### 7. Unmark Task: `unmark`
+Reverts a completed task back to "not done".
+* **Format:** `unmark INDEX`
+* **Example:** `unmark 1`
+
+### 8. Find Tasks: `find`
+Searches for tasks containing the specified keyword(s).
+* **Format:** `find KEYWORD [MORE_KEYWORDS]…`
+* **Example:** `find project`
+
+### 9. Delete a Task: `delete`
+Removes a task permanently from the list.
+* **Format:** `delete INDEX`
+* **Example:** `delete 3`
+
+### 10. List All Tasks: `list`
+Displays every task currently saved in the application.
+* **Format:** `list`
+
+### 11. Exit Program: `exit`
+Safely closes the application.
+* **Format:** `exit`
+
+---
+
+ 
