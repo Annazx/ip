@@ -198,7 +198,6 @@ public class Parser {
         assert i > 0 && i < tasks.getSize();
         Task temp = tasks.get(i);
         tasks.removeTask(i);
-
         storage.updateData(tasks);
         return ui.printRemove(temp, tasks.getSize());
     }
@@ -213,14 +212,23 @@ public class Parser {
         if (parts.length < 2) {
             throw new JaneException("No keyword given\n");
         }
-        String list = "";
-        for (int i = 1; i < parts.length; i++) {
-            for (int j = 0; j < tasks.getSize(); j++) {
-                if (tasks.get(j).toString().contains(parts[i])) {
-                    list += tasks.get(j).toString() + "\n";
+
+        StringBuilder list = new StringBuilder();
+        for (int j = 0; j < tasks.getSize(); j++) {
+            String task = tasks.get(j).toString().toLowerCase();
+            for (int i = 1; i < parts.length; i++) {
+                String keyword = parts[i].toLowerCase();
+                if (task.contains(keyword)) {
+                    list.append(tasks.get(j).toString()).append("\n");
+                    break;
                 }
             }
         }
-        return ui.printFind(list);
+
+        if (list.isEmpty()) {
+            throw new JaneException("No matching tasks found.\n");
+        }
+
+        return ui.printFind(list.toString());
     }
 }
